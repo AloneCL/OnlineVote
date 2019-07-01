@@ -20,11 +20,8 @@ public class SubmitRegister extends HttpServlet implements FinalConstant{
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserDaoImp userDaoImp = new UserDaoImp();
         User user = new User();
-        String name = request.getParameter("userName");
-        String pass = request.getParameter("userPass");
-        System.out.println(name + " " + pass);
-        user.setUserName(name);
-        user.setUserPass(pass);
+        user.setUserName(request.getParameter("userName"));
+        user.setUserPass(request.getParameter("userPass"));
 
         int rs = userDaoImp.add(user);
         if (rs == 3){

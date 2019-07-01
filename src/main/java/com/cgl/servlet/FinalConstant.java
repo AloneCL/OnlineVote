@@ -12,6 +12,11 @@ public interface FinalConstant {
     String SESSION_VALIDATECODE = "imagecode";
 
     /**
+     * 存放于request中的客户端输入的图片验证码内容
+     */
+    String REQUEST_VALIDATECODE = "validateCode";
+
+    /**
      * 存放于request对象中的错误提示信息 用于注册或登录验证
      */
     String REQUEST_ERROR_INFO = "error";
