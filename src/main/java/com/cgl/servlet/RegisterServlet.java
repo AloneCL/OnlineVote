@@ -15,6 +15,7 @@ import java.io.IOException;
 @WebServlet(name = "register",urlPatterns = "/userRegister")
 public class RegisterServlet extends HttpServlet implements FinalConstant{
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
         String error = (String) request.getAttribute(REQUEST_ERROR_INFO);
         if(error != null) {
             if (error.equals(REGISTER_ERROR_ALIVE)) {

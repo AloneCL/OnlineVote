@@ -19,7 +19,7 @@ import java.io.IOException;
 @WebServlet(name = "SubmitLoginServlet",urlPatterns = "/submitLogin")
 public class SubmitLoginServlet extends HttpServlet implements FinalConstant{
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        request.setCharacterEncoding("utf-8");
         HttpSession session = request.getSession();
         String clientCheckCode = request.getParameter(REQUEST_VALIDATECODE);
         String serverCheckCode = (String) request.getSession().getAttribute(session.getId()+SESSION_VALIDATECODE);
@@ -38,9 +38,12 @@ public class SubmitLoginServlet extends HttpServlet implements FinalConstant{
         }else if(rs == 0){
             request.setAttribute(REQUEST_ERROR_INFO,REGISTER_ERROR_ALIVE);
             request.getRequestDispatcher("userLogin").forward(request,response);
+        }else if(rs==-1){
+            request.setAttribute(REQUEST_ERROR_INFO,LOGIN_ERROR_PASS);
+            request.getRequestDispatcher("userLogin").forward(request,response);
         }else{
-
+            request.getSession().setAttribute(SESSION_USER,user.getUserName());
+            request.getRequestDispatcher("showOption").forward(request,response);
         }
-
     }
 }

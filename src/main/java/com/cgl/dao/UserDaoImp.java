@@ -20,7 +20,7 @@ public class UserDaoImp implements UserDao {
 
     /**
      * 用户登录逻辑
-     * 返回1为正确   返回3为格式错误 返回0则表示用户名不存在
+     * 返回1为正确   返回3为格式错误 返回0则表示用户名不存在 -1表示用户名密码错误
      * @param v
      * @return
      */
@@ -32,6 +32,7 @@ public class UserDaoImp implements UserDao {
         User u = findByName(v.getUserName());
         if(u!=null){
             if(v.getUserPass().equals(u.getUserPass())) return  1;
+            else return -1;
         }
         return 0;
     }

@@ -18,6 +18,7 @@ import java.io.IOException;
 @WebServlet(name = "registerSubmit",urlPatterns = "/submitRegister")
 public class SubmitRegister extends HttpServlet implements FinalConstant{
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
         UserDaoImp userDaoImp = new UserDaoImp();
         User user = new User();
         user.setUserName(request.getParameter("userName"));

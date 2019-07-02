@@ -12,6 +12,10 @@ public interface FinalConstant {
     String SESSION_VALIDATECODE = "imagecode";
 
     /**
+     * 登录后存放于服务器session中的用户名 用于判断登录等
+     */
+    String SESSION_USER = "user";
+    /**
      * 存放于request中的客户端输入的图片验证码内容
      */
     String REQUEST_VALIDATECODE = "validateCode";
@@ -24,7 +28,7 @@ public interface FinalConstant {
     /**
      * 登陆时密码错误的错误类型
      */
-    String LOGIN_ERROR_PASS = "1";
+    String LOGIN_ERROR_PASS = "-1";
 
     /**
      * 验证码错误的错误类型
@@ -37,7 +41,7 @@ public interface FinalConstant {
     String LOGIN_ERROR_FORMAT = "3";
 
     /**
-     * 后端验证用户账号已经存在
+     * 后端验证用户账号已经存在或登录不存在
      */
     String REGISTER_ERROR_ALIVE = "0";
 }

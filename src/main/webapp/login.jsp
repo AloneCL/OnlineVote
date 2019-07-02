@@ -97,18 +97,17 @@
 
     function checkeName()
     {
-        var  name = document.getElementById("name").value;
+        var name = document.getElementById("name").value;
         var nameSpan = document.getElementById("nameSpan");
-        var reg=/^[1][3,4,5,7,8][0-9]{9}$/;
-        /* if(name.length<1){
-            nameSpan.innerHTML="<font size='2' color='red'>用户名不能为空</font>"
-        }else if(name.length<6){
-            nameSpan.innerHTML="<font size='2' color='red'>用户名要至少六位</font>"
-        }else  */
-        if(!reg.test(name)){
-            nameSpan.innerHTML="<font size='2' color='red'>请输入正确的手机号</font>"
-        }else{
-            nameSpan.innerHTML="<font size='2' color='green'>符合要求</font>"
+        var reg = /^\w+$/;
+        if (name.length < 1) {
+            nameSpan.innerHTML = "<font size='2' color='red'>用户名不能为空</font>"
+        } else if (name.length < 6) {
+            nameSpan.innerHTML = "<font size='2' color='red'>用户名要至少六位</font>"
+        } else if (!reg.test(name)) {
+            nameSpan.innerHTML = "<font size='2' color='red'>只能由字母数字下划线组成</font>"
+        } else {
+            nameSpan.innerHTML = "<font size='2' color='green'>符合要求</font>"
             return true;
         }
     }
