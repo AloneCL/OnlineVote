@@ -20,7 +20,7 @@ public class UserDaoImp implements UserDao {
 
     /**
      * 用户登录逻辑
-     * 返回1为正确   返回3为格式错误 返回0则表示用户名不存在 -1表示用户名密码错误
+     * 返回1为正确   返回3为格式错误 返回0则表示用户名不存在
      * @param v
      * @return
      */
@@ -32,7 +32,6 @@ public class UserDaoImp implements UserDao {
         User u = findByName(v.getUserName());
         if(u!=null){
             if(v.getUserPass().equals(u.getUserPass())) return  1;
-            else return -1;
         }
         return 0;
     }
@@ -80,11 +79,40 @@ public class UserDaoImp implements UserDao {
         return null;
     }
 
+    /**
+     * 根据id来查找具体的对象信息
+     * @param id
+     * @return
+     */
     @Override
     public User findById(Integer id) {
+        Connection con = DBUtil.getConnection();
+        String sql  = "select * from tb_user where user_id = ?";
+        try {
+            PreparedStatement ps = con.prepareCall(sql);
+            ps.setInt(1,id);
+            ResultSet rs=ps.executeQuery();
+            if (rs.next()){
+                User user = new User();
+                user.setId(rs.getInt("user_id"));
+                user.setUserName(rs.getString("user_name"));
+                user.setUserPass(rs.getString("user_pass"));
+                user.setUserStatus(rs.getInt("user_status"));
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtil.CloseConnection(con);
+        }
         return null;
     }
 
+    /**
+     * 根据用户名来查找对象信息 用户名也是唯一标识
+     * @param name
+     * @return
+     */
     @Override
     public User findByName(String name) {
 

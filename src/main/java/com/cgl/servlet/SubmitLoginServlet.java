@@ -5,10 +5,7 @@ import com.cgl.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 /**
@@ -42,6 +39,7 @@ public class SubmitLoginServlet extends HttpServlet implements FinalConstant{
             request.setAttribute(REQUEST_ERROR_INFO,LOGIN_ERROR_PASS);
             request.getRequestDispatcher("userLogin").forward(request,response);
         }else{
+            response.addCookie(new Cookie(CLIENT_USER_ID,userDaoImp.findByName(user.getUserName()).getId()+""));
             request.getSession().setAttribute(SESSION_USER,user.getUserName());
             request.getRequestDispatcher("showOption").forward(request,response);
         }

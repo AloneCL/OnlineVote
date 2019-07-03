@@ -12,75 +12,90 @@
 <head>
     <title>投票列表</title>
     <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="css/head.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
     <style>
-        li{
-            list-style: none;
-        }
-        table,table tr th, table tr td { border:2px solid #0094ff; }
-        .table1{
-            top:40px;
-            margin: 0 auto;
-            position: relative;
-            width: 35%;
-        }
-        .table1 table{
-            text-align: center;
-            margin: 0 auto;
-            border-collapse: collapse;
-        }
-        .table1 table td{
+        /* 添加弹窗 */
+        .modal-header{
+            font-weight: 500;
             font-size: 20px;
-            padding: 5px 10px 5px 10px;
-            height: 30px;
-        }
-        #header{
-            width: 100%;
-            background-color: #333333;
-            position: fixed;
-            margin: 0;
-            z-index: 999;
-            top: 0;
+            padding: 15px 15px 0 15px;
+            border:none;
         }
 
-        #header .center{
-            position: relative;
-        }
-        .logo{
-            width: 300px;
-            height: 60px;
-            margin: 0 0 0 200px;
-            display: inline-block;
-            background: url("image/logo.png") no-repeat;
+        .modal-body{
+            font-size: 18px;
         }
 
-        #header .link{
-            top: -16px;
-            right: 120px;
-            height: 64px;
-            display: inline-block;
-            position: absolute;
+        .modal-header button:focus{
+            outline: none;
         }
 
-        #header .link>ul>li{
-            text-align: center;
-            width: 90px;
-            line-height: 60px;
-            margin-right: 8px;
-            float: left;
-            list-style: none;
+        .modal-dialog{
+            min-width: 870px;
         }
 
-        #header .link .active{
-            background-color: #000000;
-        }
-
-        #header .link>ul>li a{
-            margin: 0 auto;
-            cursor: pointer;
-            text-decoration: none;
-            color: #c7c4c4;
+        .modal-right h3{
+            margin-top: 0;
             font-size: 16px;
             font-weight: 500;
+            color: #444444;
+        }
+
+        .cl{
+            margin-bottom: 20px;
+        }
+
+        .cl input{
+            width: 100%;
+            border-radius: 1px;
+        }
+
+        .cl a{
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .cl span{
+            cursor: pointer;
+            color: rgba(11, 40, 236, 0.79);
+            font-weight: bold;
+        }
+
+        .cl span:hover{
+            color: red;
+            font-size: 17px;
+        }
+
+        .titleList li a{
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+
+        .titleList li a:hover{
+            color: red;
+            font-size: 17px;
+        }
+
+        .cl1{
+            width: 79%;
+        }
+
+        label{
+            margin-top: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #444444;
+        }
+
+        .titleList>li>label{
+            margin-left: -39px;
+        }
+
+        .btn{
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -99,7 +114,9 @@
         </nav>
     </div>
 </header>
+
 <div class="table1">
+    <div class="addClick">发起投票</div>
     <table border="2">
         <caption><h1>投票列表显示</h1></caption>
         <tr>
@@ -126,5 +143,91 @@
         </c:forEach>
     </table>
 </div>
+<div class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>添加投票</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-box">
+                    <div class="row">
+                        <div class="col-md-7 box">
+                            <form action="addSubject" method="post">
+                                <div class="modal-right">
+                                    <label class="col-md-3">投票标题：</label>
+                                    <div class="col-md-8 cl">
+                                        <input type="text" name="subjectTitle" style="width: 100%" placeholder="请输入投票标题">
+                                    </div>
+                                </div>
+                                <div class="modal-right">
+                                    <label class="col-md-3">投票选项：</label>
+                                    <div class="col-md-8 cl">
+                                        <input type="text" name="option" style="width: 100%" placeholder="请输入选项名称">
+                                    </div>
+                                </div>
+                                <ul class="titleList">
+                                    <li class="col-md-12">
+                                        <label class="col-md-3"><a href="#" title="删除选项" class="removeTitle">x</a></label>
+                                        <div class="col-md-8 cl cl1">
+                                            <input type="text" name="option" style="width: 100%" placeholder="请输入选项名称">
+                                        </div>
+                                    </li>
+                                    <li class="col-md-12">
+                                        <label class="col-md-3"><a href="#" title="删除选项" class="removeTitle">x</a></label>
+                                        <div class="col-md-8 cl cl1">
+                                            <input type="text" name="option" style="width: 100%" placeholder="请输入选项名称">
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="modal-right">
+                                    <label class="col-md-3">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <div class="col-md-8 cl">
+                                        <span class="add-title">+添加选项</span>
+                                    </div>
+                                </div>
+
+                                <div class="model-right">
+                                    <label class="col-md-3">投票类型：</label>
+                                    <div class="col-md-8">
+                                        <input type="radio" name="type" value="1">单选 &nbsp;&nbsp;&nbsp;<input type="radio" name="type" value="2">多选
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <button class="btn" type="submit">确认添加</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+</div>
 </body>
+<script src="lib/bootstrap.min.js"></script>
+<script>
+    $('.addClick').click(function () {
+        $('.modal').modal("show");
+    });
+
+    $('.add-title').click(function () {
+       $('.titleList').append(' <li class="col-md-12">\n' +
+           '                                        <label class="col-md-3"><a href="#" title="删除选项" class="removeTitle">x</a> </label>\n' +
+           '                                        <div class="col-md-8 cl cl1">\n' +
+           '                                            <input type="text" name="option" style="width: 100%" placeholder="请输入选项名称">\n' +
+           '                                        </div>\n' +
+           '                                    </li>');
+
+        $.each($('.removeTitle'),function(index,item){
+            $(item).unbind('click');
+            $(item).click(function(){
+                $(this).parent().parent().remove();
+            });
+
+        });
+    });
+</script>
 </html>

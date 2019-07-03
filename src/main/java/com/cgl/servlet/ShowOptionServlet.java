@@ -1,11 +1,16 @@
 package com.cgl.servlet;
 
+import com.cgl.dao.SubjectDaoImp;
+import com.cgl.entity.Subject;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Auther: CGL
@@ -15,6 +20,10 @@ import java.io.IOException;
 @WebServlet(name = "ShowOptionServlet",urlPatterns = "/showOption")
 public class ShowOptionServlet extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println(111111);
+        SubjectDaoImp subjectDaoImp = new SubjectDaoImp();
+        List<Subject> list = new ArrayList<Subject>();
+        list = subjectDaoImp.findAll();
+        request.setAttribute("subjectList",list);
+        request.getRequestDispatcher("subjectList.jsp").forward(request,response);
     }
 }

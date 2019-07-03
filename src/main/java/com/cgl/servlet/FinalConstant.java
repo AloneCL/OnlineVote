@@ -12,6 +12,11 @@ public interface FinalConstant {
     String SESSION_VALIDATECODE = "imagecode";
 
     /**
+     * 存放于客户端 cookie中的用户id 用于添加外键信息
+     */
+    String CLIENT_USER_ID = "userId";
+
+    /**
      * 登录后存放于服务器session中的用户名 用于判断登录等
      */
     String SESSION_USER = "user";

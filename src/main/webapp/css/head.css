@@ -1,0 +1,70 @@
+li{
+    list-style: none;
+}
+table,table tr th, table tr td { border:2px solid #0094ff; }
+.table1{
+    top:60px;
+    margin: 0 auto;
+    position: relative;
+    width: 35%;
+}
+.table1 table{
+    text-align: center;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+.table1 table td{
+    font-size: 20px;
+    padding: 5px 10px 5px 10px;
+    height: 30px;
+}
+#header{
+    width: 100%;
+    background-color: #333333;
+    position: fixed;
+    margin: 0;
+    z-index: 999;
+    top: 0;
+}
+
+#header .center{
+    position: relative;
+}
+.logo{
+    width: 300px;
+    height: 60px;
+    margin: 0 0 0 200px;
+    display: inline-block;
+    background: url("../image/logo.png") no-repeat;
+}
+
+#header .link{
+    top: -16px;
+    right: 120px;
+    height: 64px;
+    display: inline-block;
+    position: absolute;
+}
+
+#header .link>ul>li{
+    margin-top: 15px;
+    text-align: center;
+    width: 90px;
+    line-height: 60px;
+    margin-right: 8px;
+    float: left;
+    list-style: none;
+}
+
+#header .link .active{
+    background-color: #000000;
+}
+
+#header .link>ul>li a{
+    margin: 0 auto;
+    cursor: pointer;
+    text-decoration: none;
+    color: #c7c4c4;
+    font-size: 16px;
+    font-weight: 500;
+}

@@ -21,10 +21,10 @@ public class LoginCheckFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) resp;
 
         if(isIgnore(request)){
-            System.out.println("忽略的操作路径");
+           // System.out.println("忽略的操作路径");
             chain.doFilter(request,response);
         }else {
-            System.out.println("被过滤器拦截的操作");
+            //System.out.println("被过滤器拦截的操作");
             String user = (String) request.getSession().getAttribute("user");
             String admin = (String) request.getSession().getAttribute("admin");
             if(user!=null || admin!=null){
@@ -49,7 +49,7 @@ public class LoginCheckFilter implements Filter {
                 return true;
             }
         }
-        System.out.println(path);
+       // System.out.println(path);
         return false;
     }
 

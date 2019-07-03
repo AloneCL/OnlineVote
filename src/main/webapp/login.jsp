@@ -82,18 +82,17 @@
             + new Date();
     }
     /*校验验证码输入是否正确*/
-  /*  function checkImg(code) {
-        var url = "${pageContext.request.contextPath}/checkimagecode.action";
+    function checkImg(code) {
+        var url = "${pageContext.request.contextPath}/checkCode";
         $.get(url, {
             "validateCode" : code
         }, function(data) {
-            if (data == "ok") {
+            if (data == "true") {
             } else {
-                alert("验证码错误!")
                 flushValidateCode();
             }
         })
-    }*/
+    }
 
     function checkeName()
     {
