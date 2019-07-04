@@ -1,22 +1,41 @@
 li{
     list-style: none;
 }
-table,table tr th, table tr td { border:2px solid #0094ff; }
+
 .table1{
     top:60px;
     margin: 0 auto;
     position: relative;
-    width: 35%;
+    width: 80%;
 }
+
+.table1 table a{
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.table1 table a:hover{
+    font-size: 18px;
+    color: red;
+}
+
+.table1 table th{
+    width: 20%;
+    text-align: center;
+}
+
 .table1 table{
     text-align: center;
     margin: 0 auto;
     border-collapse: collapse;
 }
 .table1 table td{
-    font-size: 20px;
-    padding: 5px 10px 5px 10px;
+    color: #262626;
+    font-size: 19px;
+    padding: 15px 10px 5px 15px;
     height: 30px;
+    line-height: 30px;
 }
 #header{
     width: 100%;

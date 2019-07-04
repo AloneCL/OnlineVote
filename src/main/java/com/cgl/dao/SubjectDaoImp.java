@@ -98,6 +98,28 @@ public class SubjectDaoImp implements SubjectDao {
     }
 
     /**
+     *
+     * @return
+     */
+    @Override
+    public int getCount() {
+        Connection con = DBUtil.getConnection();
+        String sql = "select count(1) as count from tb_subject";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                return rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtil.CloseConnection(con);
+        }
+        return 0;
+    }
+
+    /**
      * 根据id索引查找数据
      * @param id
      * @return
@@ -182,6 +204,38 @@ public class SubjectDaoImp implements SubjectDao {
     }
 
     /**
+     *
+     * @param start  开始序号  数据库从第一条数据从0开始
+     * @param pageSize   每页所拥有的数据条数
+     * @return
+     */
+    @Override
+    public List<Subject> findByPage(int start, int pageSize) {
+        PreparedStatement ps = null;
+        Connection con = DBUtil.getConnection();
+        String sql = "select * from tb_subject limit ?,?";
+        List<Subject> subjectList = new ArrayList<Subject>();
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1,start);
+            ps.setInt(2,pageSize);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                Subject subject = new Subject();
+                subject.setId(rs.getInt("subject_id"));
+                subject.setTitle(rs.getString("subject_title"));
+                subject.setType(rs.getInt("subject_type"));
+                subjectList.add(subject);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return subjectList;
+    }
+
+    /**
      * 根据id删除数据
      * @param id
      * @return  返回删除的数量
@@ -208,11 +262,11 @@ public class SubjectDaoImp implements SubjectDao {
         subject.setTitle("添加投票测试2");
         subject.setType(1);
         SubjectDaoImp subjectDaoImp = new SubjectDaoImp();
-
-        List<Subject> list = subjectDaoImp.findAll();
+        System.out.println(subjectDaoImp.getCount());
+       /* List<Subject> list = subjectDaoImp.findAll();
         for (Subject s: list
         ) {
             System.out.println(s);
-        }
+        }*/
     }
 }

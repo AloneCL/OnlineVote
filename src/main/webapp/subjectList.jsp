@@ -16,6 +16,10 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
     <style>
+
+        body{
+            background-color: #e2d8cf;
+        }
         /* 添加弹窗 */
         .modal-header{
             font-weight: 500;
@@ -117,8 +121,9 @@
 
 <div class="table1">
     <div class="addClick">发起投票</div>
-    <table border="2">
-        <caption><h1>投票列表显示</h1></caption>
+    <table>
+        <caption style="text-align: center"><h1>投票列表显示</h1> <hr></caption>
+
         <tr>
             <th>序号</th>
             <th>投票名称</th>
@@ -141,6 +146,27 @@
                 <td>参与</td>
             </tr>
         </c:forEach>
+        <tr>
+            <td colspan="5" style="font-size: 18px">
+                <c:choose>
+                    <c:when test="${currentPage!=1}">
+                        <a href="showOption?page=${currentPage-1}">上一页</a>
+                    </c:when>
+                    <c:otherwise>
+                        上一页
+                    </c:otherwise>
+                </c:choose>
+                共<span style="color: red;font-size: 19px">${totalPage}</span>页&nbsp;共<span style="color: red;font-size: 19px">${total}</span>有条记录&nbsp;当前是第<span style="color: red;font-size: 19px">${currentPage}</span>页&nbsp;
+                <c:choose>
+                    <c:when test="${currentPage != totalPage }">
+                        <a href="showOption?page=${currentPage+1}">下一页</a>
+                    </c:when>
+                    <c:otherwise>
+                        下一页
+                    </c:otherwise>
+                </c:choose>
+            </td>
+        </tr>
     </table>
 </div>
 <div class="modal fade" tabindex="-1" role="dialog">
@@ -214,12 +240,12 @@
     });
 
     $('.add-title').click(function () {
-       $('.titleList').append(' <li class="col-md-12">\n' +
-           '                                        <label class="col-md-3"><a href="#" title="删除选项" class="removeTitle">x</a> </label>\n' +
-           '                                        <div class="col-md-8 cl cl1">\n' +
-           '                                            <input type="text" name="option" style="width: 100%" placeholder="请输入选项名称">\n' +
-           '                                        </div>\n' +
-           '                                    </li>');
+        $('.titleList').append(' <li class="col-md-12">\n' +
+            '                                        <label class="col-md-3"><a href="#" title="删除选项" class="removeTitle">x</a> </label>\n' +
+            '                                        <div class="col-md-8 cl cl1">\n' +
+            '                                            <input type="text" name="option" style="width: 100%" placeholder="请输入选项名称">\n' +
+            '                                        </div>\n' +
+            '                                    </li>');
 
         $.each($('.removeTitle'),function(index,item){
             $(item).unbind('click');

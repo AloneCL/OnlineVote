@@ -6,6 +6,11 @@ package com.cgl.servlet;
  * @Description: 常量控制器 各类常量都在此定义
  */
 public interface FinalConstant {
+
+    /**
+     * 分页查询每页信息的条数
+     */
+    int PAGE_SIZE = 10;
     /**
      * 服务器存放在Session中的验证码属性名
      */
