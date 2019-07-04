@@ -1,6 +1,7 @@
 package com.cgl.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @Auther: CGL
@@ -12,6 +13,34 @@ public class Subject implements Serializable {
     private int id;     //唯一标识 对应主键 subject_id
     private  String title;    //投票内容标识  对应subject_title
     private  int type;         //投票类别  多选或单选 1为单选 2为多选
+    private int userId;       //发起投票的用户id
+    private Date startTime;   //投票发起时间
+    private Date endTime;          //投票截止时间
+    private String status;            //投票的状态 是否已过期或剩余多少时间过期
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
     public Subject() {
     }
@@ -40,12 +69,24 @@ public class Subject implements Serializable {
         this.type = type;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Subject{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", type=" + type +
+                ", userId=" + userId +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

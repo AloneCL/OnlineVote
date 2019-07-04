@@ -3,12 +3,12 @@ package com.cgl.dao;
 import com.cgl.entity.Option;
 import com.cgl.entity.Subject;
 import com.cgl.tools.DBUtil;
+import com.cgl.tools.DateConventer;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,7 +26,7 @@ public class SubjectDaoImp implements SubjectDao {
     @Override
     public int add(Subject v, List<Option> options) throws SQLException{
         Connection con = DBUtil.getConnection();
-        String sql = "insert into tb_subject(subject_title,subject_type) values(?,?)";
+        String sql = "insert into tb_subject(subject_title,subject_type,user_id,startTime,endTime) values(?,?,?,?,?)";
         String sql2 = "insert into tb_option(option_name,subject_id,option_order) values(?,?,?)";
         boolean flag = con.getAutoCommit();
         con.setAutoCommit(false);
@@ -34,6 +34,9 @@ public class SubjectDaoImp implements SubjectDao {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1,v.getTitle());
             ps.setInt(2,v.getType());
+            ps.setInt(3,v.getUserId());
+            ps.setTimestamp(4, (Timestamp) v.getStartTime());
+            ps.setTimestamp(5, (Timestamp) v.getEndTime());
             int rs = ps.executeUpdate();
             int subjectId = -1;
             if(rs>0){
@@ -137,6 +140,9 @@ public class SubjectDaoImp implements SubjectDao {
                 subject.setId(id);
                 subject.setTitle(rs.getString("subject_title"));
                 subject.setType(rs.getInt("subject_type"));
+                subject.setUserId(rs.getInt("user_id"));
+                subject.setStartTime(rs.getTimestamp("startTime"));
+                subject.setEndTime(rs.getTimestamp("endTime"));
                 return subject;
             }
         } catch (SQLException e) {
@@ -165,6 +171,9 @@ public class SubjectDaoImp implements SubjectDao {
                 subject.setId(rs.getInt("subject_id"));
                 subject.setTitle(rs.getString("subject_title"));
                 subject.setType(rs.getInt("subject_type"));
+                subject.setUserId(rs.getInt("user_id"));
+                subject.setStartTime(rs.getTimestamp("startTime"));
+                subject.setEndTime(rs.getTimestamp("endTime"));
                 return subject;
             }
         } catch (SQLException e) {
@@ -192,6 +201,9 @@ public class SubjectDaoImp implements SubjectDao {
                 subject.setId(rs.getInt("subject_id"));
                 subject.setTitle(rs.getString("subject_title"));
                 subject.setType(rs.getInt("subject_type"));
+                subject.setUserId(rs.getInt("user_id"));
+                subject.setStartTime(rs.getTimestamp("startTime"));
+                subject.setEndTime(rs.getTimestamp("endTime"));
                 list.add(subject);
             }
         } catch (SQLException e) {
@@ -207,13 +219,20 @@ public class SubjectDaoImp implements SubjectDao {
      *
      * @param start  开始序号  数据库从第一条数据从0开始
      * @param pageSize   每页所拥有的数据条数
+     * @param type      查询的类型 是否已过期  0代表所有类型 1代表进行中 2代表已过期
      * @return
      */
     @Override
-    public List<Subject> findByPage(int start, int pageSize) {
+    public List<Subject> findByPage(int start, int pageSize,int type) {
         PreparedStatement ps = null;
+        String sql = "";
         Connection con = DBUtil.getConnection();
-        String sql = "select * from tb_subject limit ?,?";
+        if(type==0)
+         sql = "select * from tb_subject limit ?,?";
+        else  if(type == 1)
+            sql = "select * from tb_subject where (select current_timestamp) < endTime limit ?,?";
+        else
+            sql = "select * from tb_subject where (select current_timestamp) > endTime limit ?,?";
         List<Subject> subjectList = new ArrayList<Subject>();
         try {
             ps = con.prepareStatement(sql);
@@ -226,6 +245,10 @@ public class SubjectDaoImp implements SubjectDao {
                 subject.setId(rs.getInt("subject_id"));
                 subject.setTitle(rs.getString("subject_title"));
                 subject.setType(rs.getInt("subject_type"));
+                subject.setUserId(rs.getInt("user_id"));
+                subject.setStartTime(rs.getTimestamp("startTime"));
+                subject.setEndTime(rs.getTimestamp("endTime"));
+                subject.setStatus(DateConventer.TimeDifference(new Date().getTime(),subject.getEndTime().getTime()));
                 subjectList.add(subject);
             }
 
@@ -257,16 +280,26 @@ public class SubjectDaoImp implements SubjectDao {
         return 0;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         Subject subject = new Subject();
-        subject.setTitle("添加投票测试2");
-        subject.setType(1);
+        SimpleDateFormat dd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SubjectDaoImp subjectDaoImp = new SubjectDaoImp();
+
+       /* subject.setTitle("timestamp添加测试");
+        subject.setType(1);
+        subject.setEndTime(new Timestamp(new Date().getTime()));
+        subject.setEndTime(new Timestamp(new Date().getTime()));
+        subject.setUserId(1);
+       List<Option> options = new ArrayList<Option>();
+       options.add(new Option("11",10,2));
+       options.add(new Option("22",10,1));
+        subjectDaoImp.add(subject,options);*/
+        List<Subject> list = subjectDaoImp.findByPage(0,5,0);
         System.out.println(subjectDaoImp.getCount());
-       /* List<Subject> list = subjectDaoImp.findAll();
         for (Subject s: list
         ) {
+          //  System.out.println(dd.format(s.getEndTime())+"  "+dd.format(s.getStartTime()));
             System.out.println(s);
-        }*/
+        }
     }
 }

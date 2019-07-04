@@ -18,6 +18,13 @@ public class Option implements Serializable {
     public Option(){
 
     }
+
+    public Option(String option, int subjectId, int order) {
+        this.option = option;
+        this.subjectId = subjectId;
+        this.order = order;
+    }
+
     public int getId() {
         return id;
     }

@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE>
 <html>
 <head>
@@ -15,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="css/head.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
     <style>
 
         body{
@@ -110,7 +112,7 @@
         <nav class="link">
             <ul>
                 <li class="active"><a href="index.html">首页</a></li>
-                <li><a href="information.html">发起投票</a></li>
+                <li><a href="#" class="addClick">发起投票</a></li>
                 <li><a href="ticket.html">我的投票</a></li>
                 <li><a href="scenery.html">个人中心</a></li>
                 <li><a href="about.html">系统简介</a></li>
@@ -120,14 +122,15 @@
 </header>
 
 <div class="table1">
-    <div class="addClick">发起投票</div>
     <table>
         <caption style="text-align: center"><h1>投票列表显示</h1> <hr></caption>
 
         <tr>
             <th>序号</th>
             <th>投票名称</th>
-            <th>类别</th>
+            <th style="width: 6%">类别</th>
+            <th>状态</th>
+            <th>结束时间</th>
             <th colspan="2">操作</th>
         </tr>
         <c:forEach items="${subjectList}" var="s">
@@ -142,6 +145,24 @@
                         <td>多选</td>
                     </c:otherwise>
                 </c:choose>
+                <td>
+                    <c:choose>
+                        <c:when test="${s.status=='false'}">
+                            <span style="color: red;">已结束</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span style="color: #1db31d;">进行中</span>
+                        </c:otherwise>
+                    </c:choose>
+                </td>
+                <td> <c:choose>
+                    <c:when test="${s.status=='false'}">
+                        -----
+                    </c:when>
+                    <c:otherwise>
+                       ${s.status}
+                    </c:otherwise>
+                </c:choose></td>
                 <td>查看</td>
                 <td>参与</td>
             </tr>
@@ -213,11 +234,16 @@
                                         <span class="add-title">+添加选项</span>
                                     </div>
                                 </div>
-
+                                <div class="modal-right">
+                                    <label class="col-md-3">截至日期：</label>
+                                    <div class="col-md-8 cl">
+                                        <input type="text" name="endTime" id="endTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})">
+                                    </div>
+                                </div>
                                 <div class="model-right">
                                     <label class="col-md-3">投票类型：</label>
                                     <div class="col-md-8">
-                                        <input type="radio" name="type" value="1">单选 &nbsp;&nbsp;&nbsp;<input type="radio" name="type" value="2">多选
+                                        <input type="radio" name="type" value="1" checked>单选 &nbsp;&nbsp;&nbsp;<input type="radio" name="type" value="2">多选
                                     </div>
                                 </div>
                                 <div class="col-lg-4">

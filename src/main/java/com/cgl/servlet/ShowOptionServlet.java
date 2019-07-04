@@ -21,6 +21,10 @@ import java.util.List;
 public class ShowOptionServlet extends HttpServlet implements FinalConstant{
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SubjectDaoImp subjectDaoImp = new SubjectDaoImp();
+        int type = 0;
+        if(request.getParameter("searchType")!=null){
+          type = Integer.valueOf(request.getParameter("searchType"));   //查询的状态
+        }
         List<Subject> list = new ArrayList<Subject>();
         int count = subjectDaoImp.getCount();     //所有信息条数
         String page = request.getParameter("page");   //前台传过来的页面数值
@@ -40,7 +44,7 @@ public class ShowOptionServlet extends HttpServlet implements FinalConstant{
         if(totalPage == 0)
             currentPage = 1;
 
-        list = subjectDaoImp.findByPage((currentPage-1)*PAGE_SIZE,PAGE_SIZE);
+        list = subjectDaoImp.findByPage((currentPage-1)*PAGE_SIZE,PAGE_SIZE,type);
 
         request.setAttribute("currentPage",currentPage);
         request.setAttribute("total",count);
