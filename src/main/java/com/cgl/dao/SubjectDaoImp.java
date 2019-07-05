@@ -71,7 +71,7 @@ public class SubjectDaoImp implements SubjectDao {
             System.out.println("添加投票失败");
             throw new SQLException();
         }finally {
-            DBUtil.CloseConnection(con);
+            DBUtil.closeConnection(con);
         }
         return 0;
     }
@@ -94,20 +94,28 @@ public class SubjectDaoImp implements SubjectDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            DBUtil.CloseConnection(con);
+            DBUtil.closeConnection(con);
         }
 
         return 0;
     }
 
+
     /**
      *
+     * @param type 查询类型  根据状态查询 0为所有 1为进行中 2为已结束
      * @return
      */
     @Override
-    public int getCount() {
+    public int getCount(int type) {
         Connection con = DBUtil.getConnection();
-        String sql = "select count(1) as count from tb_subject";
+        String sql = "";
+        if(type==0)
+            sql = "select count(1) as count from tb_subject";
+        else if (type==1)
+            sql = "select count(1) as count from tb_subject where (select current_timestamp )< endTime";
+        else
+            sql = "select count(1) as count from tb_subject where (select current_timestamp) >endTime";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -117,7 +125,7 @@ public class SubjectDaoImp implements SubjectDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            DBUtil.CloseConnection(con);
+            DBUtil.closeConnection(con);
         }
         return 0;
     }
@@ -148,7 +156,7 @@ public class SubjectDaoImp implements SubjectDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            DBUtil.CloseConnection(con);
+            DBUtil.closeConnection(con);
         }
         return null;
     }
@@ -179,7 +187,7 @@ public class SubjectDaoImp implements SubjectDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            DBUtil.CloseConnection(con);
+            DBUtil.closeConnection(con);
         }
         return null;
     }
@@ -209,7 +217,7 @@ public class SubjectDaoImp implements SubjectDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            DBUtil.CloseConnection(con);
+            DBUtil.closeConnection(con);
         }
 
         return list;
@@ -228,7 +236,7 @@ public class SubjectDaoImp implements SubjectDao {
         String sql = "";
         Connection con = DBUtil.getConnection();
         if(type==0)
-         sql = "select * from tb_subject limit ?,?";
+            sql = "select * from tb_subject limit ?,?";
         else  if(type == 1)
             sql = "select * from tb_subject where (select current_timestamp) < endTime limit ?,?";
         else
@@ -274,7 +282,7 @@ public class SubjectDaoImp implements SubjectDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            DBUtil.CloseConnection(con);
+            DBUtil.closeConnection(con);
         }
 
         return 0;
@@ -295,10 +303,10 @@ public class SubjectDaoImp implements SubjectDao {
        options.add(new Option("22",10,1));
         subjectDaoImp.add(subject,options);*/
         List<Subject> list = subjectDaoImp.findByPage(0,5,0);
-        System.out.println(subjectDaoImp.getCount());
+        // System.out.println(subjectDaoImp.getCount());
         for (Subject s: list
         ) {
-          //  System.out.println(dd.format(s.getEndTime())+"  "+dd.format(s.getStartTime()));
+            //  System.out.println(dd.format(s.getEndTime())+"  "+dd.format(s.getStartTime()));
             System.out.println(s);
         }
     }

@@ -17,9 +17,10 @@ public interface SubjectDao {
 
     /**
      * 获取所有的信息数量 用于分页
+     * @param type 查询类型  根据状态查询 0为所有 1为进行中 2为已结束
      * @return
      */
-    int getCount();
+    int getCount(int type);
 
 
     Subject findById(Integer id);

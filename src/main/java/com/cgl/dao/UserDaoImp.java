@@ -59,7 +59,7 @@ public class UserDaoImp implements UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            DBUtil.CloseConnection(con);
+            DBUtil.closeConnection(con);
         }
         return 0;
     }
@@ -103,7 +103,7 @@ public class UserDaoImp implements UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            DBUtil.CloseConnection(con);
+            DBUtil.closeConnection(con);
         }
         return null;
     }
@@ -133,7 +133,7 @@ public class UserDaoImp implements UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            DBUtil.CloseConnection(con);
+            DBUtil.closeConnection(con);
         }
         return null;
     }

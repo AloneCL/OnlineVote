@@ -15,6 +15,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="css/head.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/subjectList.css">
     <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
     <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
     <style>
@@ -22,94 +23,7 @@
         body{
             background-color: #e2d8cf;
         }
-        /* 添加弹窗 */
-        .modal-header{
-            font-weight: 500;
-            font-size: 20px;
-            padding: 15px 15px 0 15px;
-            border:none;
-        }
 
-        .modal-body{
-            font-size: 18px;
-        }
-
-        .modal-header button:focus{
-            outline: none;
-        }
-
-        .modal-dialog{
-            min-width: 870px;
-        }
-
-        .modal-right h3{
-            margin-top: 0;
-            font-size: 16px;
-            font-weight: 500;
-            color: #444444;
-        }
-
-        .cl{
-            margin-bottom: 20px;
-        }
-
-        .cl input{
-            width: 100%;
-            border-radius: 1px;
-        }
-
-        .cl a{
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .add-title{
-            font-size: 17px;
-            cursor: pointer;
-            color: rgba(11, 40, 236, 0.79);
-            font-weight: bold;
-        }
-
-        .cl span{
-            font-size: 15px;
-            display: block;
-            color: red;
-            margin-top: 5px;
-            font-weight: bold;
-        }
-
-
-
-
-        .titleList li a{
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-
-        .titleList li a:hover{
-            color: red;
-            font-size: 17px;
-        }
-
-        .cl1{
-            width: 79%;
-        }
-
-        label{
-            margin-top: 0;
-            font-size: 16px;
-            font-weight: 600;
-            color: #444444;
-        }
-
-        .titleList>li>label{
-            margin-left: -39px;
-        }
-
-        .btn{
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
@@ -141,7 +55,7 @@
         </caption>
 
         <tr>
-            <th>序号</th>
+            <th style="width: 5%;">序号</th>
             <th>投票名称</th>
             <th style="width: 6%">类别</th>
             <th>状态</th>
@@ -175,11 +89,13 @@
                         -----
                     </c:when>
                     <c:otherwise>
-                       ${s.status}
+                        ${s.status}
                     </c:otherwise>
                 </c:choose></td>
-                <td>查看</td>
-                <td>参与</td>
+                <td colspan="2">
+                    <a href="subjectDetail?sId=${s.id}" class="see nohover">查看</a>
+                    <a href="#" class="see nohover">参与</a>
+                </td>
             </tr>
         </c:forEach>
         <tr>
@@ -304,9 +220,9 @@
         }else {
             for(var i = 0; i<title.length; i++){
                 if(title[i].value== ''){
-                  //  console.log(111);
-                 $(title[i]).next().text('选项内容不能为空');
-                 return false;
+                    //  console.log(111);
+                    $(title[i]).next().text('选项内容不能为空');
+                    return false;
                 }else {
                     $(title[i]).next().text("");
                 }
@@ -316,21 +232,21 @@
     }
 
     function checkTitle(){
-          var title = $("input[name='subjectTitle']");
-           var regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im,
+        var title = $("input[name='subjectTitle']");
+        var regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im,
             regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im;
 
-          if(title[0].value == ''){
-               $(title[0]).next().text("标题不能为空");
-               return false;
-          }else {
-              if(regEn.test(title[0].value)||regCn.test(title[0].value)){
-                  $(title[0]).next().text("标题不能包含特殊字符");
-                  return false;
-              }
-          }
+        if(title[0].value == ''){
+            $(title[0]).next().text("标题不能为空");
+            return false;
+        }else {
+            if(regEn.test(title[0].value)||regCn.test(title[0].value)){
+                $(title[0]).next().text("标题不能包含特殊字符");
+                return false;
+            }
+        }
         $(title[0]).next().text("");
-          return true;
+        return true;
     }
 
     $('.addClick').click(function () {

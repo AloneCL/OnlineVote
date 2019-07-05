@@ -29,7 +29,7 @@ public class SubjectListServlet extends HttpServlet implements FinalConstant{
         if(type == -1)
             type = 0;
         List<Subject> list = new ArrayList<Subject>();
-        int count = subjectDaoImp.getCount();     //所有信息条数
+        int count = subjectDaoImp.getCount(type);     //所有信息条数
         String page = request.getParameter("page");   //前台传过来的页面数值
         boolean hasNext = true;
         int totalPage = count%PAGE_SIZE >0 ? count/PAGE_SIZE+1 : count/PAGE_SIZE;
