@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +36,16 @@ public class AddSubjectServlet extends HttpServlet implements FinalConstant{
             int type = Integer.valueOf(request.getParameter("type"));
             String[] options = request.getParameterValues("option");
             String endTime = request.getParameter("endTime");
+            Date end = null;
+            if(!endTime.equals("")){
+                end = DateConventer.dateConvent(endTime);
+            }
+            if (end==null||new Date().compareTo(end) < 0) { //前台没有设置时间或者设置了错误的时间
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.HOUR, 1);
+                end = calendar.getTime();
+            }
+
             System.out.println(endTime);
             int userId = -1;
             cookies = request.getCookies();
@@ -50,7 +61,8 @@ public class AddSubjectServlet extends HttpServlet implements FinalConstant{
             subject.setTitle(title);
             subject.setUserId(userId);
             subject.setStartTime(new Timestamp(new Date().getTime()));
-            subject.setEndTime(new Timestamp(DateConventer.dateConvent(endTime).getTime()));
+            subject.setEndTime(new Timestamp(end.getTime()));
+
             List<Option> optionsList = new ArrayList<Option>();
             for(int i = 0; i<options.length; i++){
                 Option option1 = new Option();
@@ -65,6 +77,6 @@ public class AddSubjectServlet extends HttpServlet implements FinalConstant{
         } catch (SQLException | ParseException e) {
             e.printStackTrace();
         }
-        response.sendRedirect("showOption");
+        response.sendRedirect("showSubject");
     }
 }

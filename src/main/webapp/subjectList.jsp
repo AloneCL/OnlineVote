@@ -63,16 +63,23 @@
             text-decoration: none;
         }
 
-        .cl span{
+        .add-title{
+            font-size: 17px;
             cursor: pointer;
             color: rgba(11, 40, 236, 0.79);
             font-weight: bold;
         }
 
-        .cl span:hover{
+        .cl span{
+            font-size: 15px;
+            display: block;
             color: red;
-            font-size: 17px;
+            margin-top: 5px;
+            font-weight: bold;
         }
+
+
+
 
         .titleList li a{
             cursor: pointer;
@@ -123,7 +130,15 @@
 
 <div class="table1">
     <table>
-        <caption style="text-align: center"><h1>投票列表显示</h1> <hr></caption>
+        <caption style="text-align: center">
+            <select name="searchType" onchange="changeList(this.options[this.options.selectedIndex].value)">
+                <option value="-1">状态筛选</option>
+                <option value="0" <c:if test="${type==0}">selected</c:if>>全选</option>
+                <option value="1" <c:if test="${type==1}">selected</c:if>>进行中</option>
+                <option value="2" <c:if test="${type==2}">selected</c:if>>已结束</option>
+            </select>
+            <h1 style="display: inline-block">投票列表显示</h1> <hr>
+        </caption>
 
         <tr>
             <th>序号</th>
@@ -171,7 +186,7 @@
             <td colspan="5" style="font-size: 18px">
                 <c:choose>
                     <c:when test="${currentPage!=1}">
-                        <a href="showOption?page=${currentPage-1}">上一页</a>
+                        <a href="showSubject?page=${currentPage-1}">上一页</a>
                     </c:when>
                     <c:otherwise>
                         上一页
@@ -180,7 +195,7 @@
                 共<span style="color: red;font-size: 19px">${totalPage}</span>页&nbsp;共<span style="color: red;font-size: 19px">${total}</span>有条记录&nbsp;当前是第<span style="color: red;font-size: 19px">${currentPage}</span>页&nbsp;
                 <c:choose>
                     <c:when test="${currentPage != totalPage }">
-                        <a href="showOption?page=${currentPage+1}">下一页</a>
+                        <a href="showSubject?page=${currentPage+1}">下一页</a>
                     </c:when>
                     <c:otherwise>
                         下一页
@@ -201,43 +216,43 @@
                 <div class="container-box">
                     <div class="row">
                         <div class="col-md-7 box">
-                            <form action="addSubject" method="post">
+                            <form action="addSubject" method="post" onsubmit="checkForm()">
                                 <div class="modal-right">
                                     <label class="col-md-3">投票标题：</label>
                                     <div class="col-md-8 cl">
-                                        <input type="text" name="subjectTitle" style="width: 100%" placeholder="请输入投票标题">
+                                        <input type="text" onblur="checkTitle()" name="subjectTitle" style="width: 100%" placeholder="请输入投票标题"><span></span>
                                     </div>
                                 </div>
                                 <div class="modal-right">
                                     <label class="col-md-3">投票选项：</label>
                                     <div class="col-md-8 cl">
-                                        <input type="text" name="option" style="width: 100%" placeholder="请输入选项名称">
+                                        <input type="text" onblur="checkOption()" name="option" style="width: 100%" placeholder="请输入选项名称"><span></span>
                                     </div>
                                 </div>
                                 <ul class="titleList">
                                     <li class="col-md-12">
                                         <label class="col-md-3"><a href="#" title="删除选项" class="removeTitle">x</a></label>
                                         <div class="col-md-8 cl cl1">
-                                            <input type="text" name="option" style="width: 100%" placeholder="请输入选项名称">
+                                            <input type="text" onblur="checkOption()" name="option" style="width: 100%" placeholder="请输入选项名称"><span></span>
                                         </div>
                                     </li>
                                     <li class="col-md-12">
                                         <label class="col-md-3"><a href="#" title="删除选项" class="removeTitle">x</a></label>
                                         <div class="col-md-8 cl cl1">
-                                            <input type="text" name="option" style="width: 100%" placeholder="请输入选项名称">
+                                            <input type="text"  onblur="checkOption()" name="option" style="width: 100%" placeholder="请输入选项名称"><span></span>
                                         </div>
                                     </li>
                                 </ul>
                                 <div class="modal-right">
                                     <label class="col-md-3">&nbsp;&nbsp;&nbsp;&nbsp;</label>
                                     <div class="col-md-8 cl">
-                                        <span class="add-title">+添加选项</span>
+                                        <span class="add-title" style="font-size: 17px;color: rgba(11, 40, 236, 0.79);">+添加选项</span>
                                     </div>
                                 </div>
                                 <div class="modal-right">
                                     <label class="col-md-3">截至日期：</label>
                                     <div class="col-md-8 cl">
-                                        <input type="text" name="endTime" id="endTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})">
+                                        <input type="text" name="endTime" id="endTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"><span style="color: green;">不设置则默认为1小时</span>
                                     </div>
                                 </div>
                                 <div class="model-right">
@@ -261,6 +276,63 @@
 </body>
 <script src="lib/bootstrap.min.js"></script>
 <script>
+
+    function  checkForm() {
+        if(checkTitle()&&checkOption()){
+            return true;
+        }else {
+            alert("请规范输入投票内容");
+        }
+    }
+
+    /**
+     * 根据投票状态来筛选投票
+     * @param searchType
+     */
+    function changeList(searchType){
+        if(searchType!=-1){
+
+            window.self.location = "${pageContext.request.contextPath}/showSubject?searchType="+searchType;
+        }
+    }
+
+    function checkOption(){
+        var title = $("input[name='option']");
+        if(title.length<2){
+            alert("投票选项至少需要两个");
+            return false;
+        }else {
+            for(var i = 0; i<title.length; i++){
+                if(title[i].value== ''){
+                  //  console.log(111);
+                 $(title[i]).next().text('选项内容不能为空');
+                 return false;
+                }else {
+                    $(title[i]).next().text("");
+                }
+            }
+        }
+        return true;
+    }
+
+    function checkTitle(){
+          var title = $("input[name='subjectTitle']");
+           var regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im,
+            regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im;
+
+          if(title[0].value == ''){
+               $(title[0]).next().text("标题不能为空");
+               return false;
+          }else {
+              if(regEn.test(title[0].value)||regCn.test(title[0].value)){
+                  $(title[0]).next().text("标题不能包含特殊字符");
+                  return false;
+              }
+          }
+        $(title[0]).next().text("");
+          return true;
+    }
+
     $('.addClick').click(function () {
         $('.modal').modal("show");
     });
@@ -269,7 +341,7 @@
         $('.titleList').append(' <li class="col-md-12">\n' +
             '                                        <label class="col-md-3"><a href="#" title="删除选项" class="removeTitle">x</a> </label>\n' +
             '                                        <div class="col-md-8 cl cl1">\n' +
-            '                                            <input type="text" name="option" style="width: 100%" placeholder="请输入选项名称">\n' +
+            '                                            <input type="text" onblur="checkOption()" name="option" style="width: 100%" placeholder="请输入选项名称"><span></span>\n' +
             '                                        </div>\n' +
             '                                    </li>');
 
@@ -281,5 +353,15 @@
 
         });
     });
+
+    $(function () {
+        $.each($('.removeTitle'),function(index,item){
+            $(item).unbind('click');
+            $(item).click(function(){
+                $(this).parent().parent().remove();
+            });
+
+        });
+    })
 </script>
 </html>

@@ -30,6 +30,19 @@ li{
     margin: 0 auto;
     border-collapse: collapse;
 }
+
+.table1>table>caption select{
+    margin: 30px 60px 0 0;
+    height: 35px;
+    float: right;
+    font-size: 18px;
+    padding: 5px;
+    background-color: #d8eadb;
+    border: 1px;
+    border-radius: 5%;
+    color: #000;
+}
+
 .table1 table td{
     color: #262626;
     font-size: 19px;

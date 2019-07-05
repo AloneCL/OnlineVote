@@ -41,7 +41,7 @@ public class SubmitLoginServlet extends HttpServlet implements FinalConstant{
         }else{
             response.addCookie(new Cookie(CLIENT_USER_ID,userDaoImp.findByName(user.getUserName()).getId()+""));
             request.getSession().setAttribute(SESSION_USER,user.getUserName());
-            request.getRequestDispatcher("showOption").forward(request,response);
+            request.getRequestDispatcher("showSubject").forward(request,response);
         }
     }
 }

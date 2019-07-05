@@ -55,11 +55,13 @@ public class DateMath {
             e.printStackTrace();
         }
         Calendar calendar = Calendar.getInstance();
-        Date date1 = calendar.getTime();
+        Date date1 = null;
+        date1 = calendar.getTime();
         System.out.println(dd.format(calendar.getTime()));
-
-        calendar.add(Calendar.HOUR_OF_DAY,2);
-
+        System.out.println("初始值达特："+date1);
+        calendar.add(Calendar.HOUR_OF_DAY,11);
+        date1 = calendar.getTime();
+        System.out.println("修改后的"+date1);
         System.out.println("两个小时后的时间"+dd.format(calendar.getTime()));
     }
 }
