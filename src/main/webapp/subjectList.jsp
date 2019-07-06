@@ -24,6 +24,8 @@
             background-color: #e2d8cf;
         }
 
+
+
     </style>
 </head>
 <body>
@@ -102,7 +104,7 @@
             <td colspan="5" style="font-size: 18px">
                 <c:choose>
                     <c:when test="${currentPage!=1}">
-                        <a href="showSubject?page=${currentPage-1}">上一页</a>
+                        <a style="color: #337ab7;font-size: 18px;" href="showSubject?page=${currentPage-1}">上一页</a>
                     </c:when>
                     <c:otherwise>
                         上一页
@@ -111,7 +113,7 @@
                 共<span style="color: red;font-size: 19px">${totalPage}</span>页&nbsp;共<span style="color: red;font-size: 19px">${total}</span>有条记录&nbsp;当前是第<span style="color: red;font-size: 19px">${currentPage}</span>页&nbsp;
                 <c:choose>
                     <c:when test="${currentPage != totalPage }">
-                        <a href="showSubject?page=${currentPage+1}">下一页</a>
+                        <a style="color: #337ab7;font-size: 18px;" href="showSubject?page=${currentPage+1}">下一页</a>
                     </c:when>
                     <c:otherwise>
                         下一页
@@ -121,7 +123,8 @@
         </tr>
     </table>
 </div>
-<div class="modal fade" tabindex="-1" role="dialog">
+<jsp:include page="addSubject.jsp"></jsp:include>
+<%--<div class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -173,11 +176,16 @@
                                 </div>
                                 <div class="model-right">
                                     <label class="col-md-3">投票类型：</label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8" style="margin-bottom: 10px">
                                         <input type="radio" name="type" value="1" checked>单选 &nbsp;&nbsp;&nbsp;<input type="radio" name="type" value="2">多选
+                                        <input type="number" name="types" class="types" min="1"  id="types" onblur="checkTypeNum()" placeholder="请输入具体数量"/>
+                                        <span style="font-size: 15px;color: red; display: block;margin-top: 5px;font-weight: bold;"></span>
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-md-4">
+                                    &nbsp;&nbsp;&nbsp;
+                                </div>
+                                <div>
                                     <button class="btn" type="submit">确认添加</button>
                                 </div>
                             </form>
@@ -188,16 +196,17 @@
         </div>
     </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
-</div>
+</div>--%>
 </body>
 <script src="lib/bootstrap.min.js"></script>
 <script>
 
     function  checkForm() {
-        if(checkTitle()&&checkOption()){
+        if(checkTitle()&&checkOption()&&checkTypeNum()){
             return true;
         }else {
             alert("请规范输入投票内容");
+            return false;
         }
     }
 
@@ -212,6 +221,10 @@
         }
     }
 
+    /**
+     * 判断选项数量和格式是否正确
+     *
+     * */
     function checkOption(){
         var title = $("input[name='option']");
         if(title.length<2){
@@ -227,6 +240,30 @@
                     $(title[i]).next().text("");
                 }
             }
+        }
+        return true;
+    }
+
+    /**
+     * 检查选项数量是否规范
+     *
+     * */
+    function  checkTypeNum() {
+        var v = document.getElementById('types');
+        var title = $("input[name='option']");
+        if(v.value>=title.length){
+           $(v).next().text("不能超过选项总数");
+           v.value = "";
+           v.focus();
+           return false;
+        }else if(v.value<1){
+            $(v).next().text("选项数量至少为1");
+            v.value = "";
+            v.focus();
+            return false;
+        }else {
+            $(v).next().text("");
+            return true;
         }
         return true;
     }
@@ -249,10 +286,16 @@
         return true;
     }
 
+    /**
+     * 添加投票窗口显示
+     */
     $('.addClick').click(function () {
         $('.modal').modal("show");
     });
 
+    /**
+     * 添加选项 并迭代ul列表子元素添加事件
+     */
     $('.add-title').click(function () {
         $('.titleList').append(' <li class="col-md-12">\n' +
             '                                        <label class="col-md-3"><a href="#" title="删除选项" class="removeTitle">x</a> </label>\n' +
@@ -270,6 +313,9 @@
         });
     });
 
+    /**
+     * 移除选项
+     */
     $(function () {
         $.each($('.removeTitle'),function(index,item){
             $(item).unbind('click');
@@ -277,6 +323,25 @@
                 $(this).parent().parent().remove();
             });
 
+        });
+    });
+
+    $(function () {
+        $('input[type=radio][name=type]').change(function () {
+            var inType = document.getElementById('types');
+            if(this.value == '2'){
+                /*$('#types').toggleClass('show');*/
+                if((inType.className.indexOf('show1') ==-1)){
+                  inType.classList.add('show1');
+                  inType.value = 2;
+                  inType.focus();
+                }
+            }else {
+                if((inType.className.indexOf('show1') !=-1)){
+                    inType.classList.remove('show1');
+                    inType.value = "";
+                }
+            }
         });
     })
 </script>

@@ -52,3 +52,30 @@ li{
     font-size: 16px;
     font-weight: 500;
 }
+
+/* 添加弹窗 */
+.modal-header{
+    font-weight: 500;
+    font-size: 20px;
+    padding: 15px 15px 0 15px;
+    border:none;
+}
+
+.modal-body{
+    font-size: 18px;
+}
+
+.modal-header button:focus{
+    outline: none;
+}
+
+.modal-dialog{
+    min-width: 870px;
+}
+
+.modal-right h3{
+    margin-top: 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #444444;
+}

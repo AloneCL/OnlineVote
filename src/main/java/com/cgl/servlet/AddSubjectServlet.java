@@ -33,7 +33,12 @@ public class AddSubjectServlet extends HttpServlet implements FinalConstant{
         try {
             System.out.println(1111111+"进入添加servlet");
             String title = request.getParameter("subjectTitle");
-            int type = Integer.valueOf(request.getParameter("type"));
+            int type = 0;
+            if(!request.getParameter("types").equals(""))
+               type = Integer.valueOf(request.getParameter("types"));
+               else{
+                   type = 1;
+            }
             String[] options = request.getParameterValues("option");
             String endTime = request.getParameter("endTime");
             Date end = null;

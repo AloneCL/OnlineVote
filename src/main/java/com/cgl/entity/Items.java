@@ -9,10 +9,20 @@ import java.io.Serializable;
  */
 public class Items implements Serializable {
     private static final long serialVersionUID = -9151033093038922451L;
-    private int id;
-    private int optionId;
-    private int subjectId;
-    private int userId;
+    private int id;              //主键id
+    private int optionId;           //选项标识id
+    private int subjectId;        //投票标识id
+    private int userId;            //投票用户id
+
+    public int getOptionOrder() {
+        return optionOrder;
+    }
+
+    public void setOptionOrder(int optionOrder) {
+        this.optionOrder = optionOrder;
+    }
+
+    private int optionOrder;      //选项标识的序号
 
     public Items(){
 
@@ -47,5 +57,16 @@ public class Items implements Serializable {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "Items{" +
+                "id=" + id +
+                ", optionId=" + optionId +
+                ", subjectId=" + subjectId +
+                ", userId=" + userId +
+                ", optionOrder=" + optionOrder +
+                '}';
     }
 }
