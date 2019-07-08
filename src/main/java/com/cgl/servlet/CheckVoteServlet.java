@@ -18,9 +18,10 @@ import java.io.IOException;
 public class CheckVoteServlet extends HttpServlet implements FinalConstant{
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int userId = Integer.valueOf(request.getParameter(CLIENT_USER_ID));
+        int subjectId = Integer.valueOf(request.getParameter("subjectId"));
         ItemDaoImp itemDaoImp = new ItemDaoImp();
 
-        if (itemDaoImp.findByUserId(userId)!=null){
+        if (itemDaoImp.findByUserId(userId,subjectId)!=null){
             response.getWriter().print("false");
         }else
             response.getWriter().print("true");

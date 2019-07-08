@@ -50,11 +50,19 @@ section{
 .option-bar{
     background: #ddd;
     box-shadow: 0 0 0;
-    height: 5px;
+    height: 8px;
     margin: 0 0 45px;
     position: relative;
     width: 100%;
     border-radius: 5px;
+}
+
+.option-bar>span{
+    display: block;height: 100%;
+    width: 0;
+    border-radius: 5px;
+    background: #F8c018;
+    background-image: linear-gradient(to right,#4cd964,#5ac8fa,#007aff,#34aadc,#5856d6,#ff2d55);
 }
 
 .option-line{
@@ -67,6 +75,8 @@ section{
     margin-right: 5px;
 }
 .option-text{
+    display: inline-block;
+    width: 90%;
     color: #333333;
     font-size: 20px;
     margin-bottom: 9px;

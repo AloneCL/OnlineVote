@@ -35,6 +35,11 @@ public class AddItemsServlet extends HttpServlet implements FinalConstant{
 
         }
         ItemDaoImp itemDaoImp = new ItemDaoImp();
-        itemDaoImp.add(itemsList);
+        int rs = itemDaoImp.add(itemsList);
+        if(rs>0){
+            response.getWriter().print("ok");
+        }else {
+            response.getWriter().print("error");
+        }
      }
 }

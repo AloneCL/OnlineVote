@@ -1,12 +1,15 @@
 package com.cgl.dao;
 
 import com.cgl.entity.Items;
+import com.cgl.entity.OrderNum;
 import com.cgl.tools.DBUtil;
+import com.sun.org.apache.xpath.internal.operations.Or;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,28 +57,82 @@ public class ItemDaoImp implements ItemsDao {
 
 
     @Override
-    public Items findByUserId(Integer id) {
+    public List<Items> findByUserId(Integer userId,Integer subjectId) {
         Connection con = DBUtil.getConnection();
         PreparedStatement ps = null;
-        String sql = "select * from tb_item where user_id = ? limit 1";
+        List<Items> list = new ArrayList<Items>();
+        String sql = "select * from tb_item where user_id = ? and subject_id = ?";
         try {
             ps = con.prepareStatement(sql);
-            ps.setInt(1,id);
+            ps.setInt(1,userId);
+            ps.setInt(2,subjectId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 Items items = new Items();
                 items.setOptionId(rs.getInt("option_id"));
                 items.setUserId(rs.getInt("user_id"));
-                return items;
+                items.setSubjectId(rs.getInt("subject_id"));
+                items.setId(rs.getInt("item_id"));
+                list.add(items);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return list;
     }
 
     @Override
     public List<Items> findBySubject(Integer subjectId) {
         return null;
+    }
+
+
+    @Override
+    public int optionNum(Integer subjectId){
+        Connection con = DBUtil.getConnection();
+        PreparedStatement ps = null;
+        String sql = "select count(1) as num from tb_item where subject_id =?";
+        int num  = 0;
+
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1,subjectId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                num = rs.getInt("num");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtil.closeConnection(con);
+        }
+        return num;
+    }
+
+    @Override
+    public List<OrderNum> searchNum(Integer subjectId) {
+        Connection con = DBUtil.getConnection();
+        PreparedStatement ps = null;
+        List<OrderNum> list = new ArrayList<OrderNum>();
+        String sql = "select option_order,option_id,count(*) as num from tb_item where subject_id = ? group by option_order order by option_order";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1,subjectId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                OrderNum orderNum = new OrderNum();
+                orderNum.setOptionOrder(rs.getInt("option_order"));
+                orderNum.setOrderId(rs.getInt("option_id"));
+                orderNum.setOrderNum(rs.getInt("num"));
+                list.add(orderNum);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtil.closeConnection(con);
+        }
+        return list;
     }
 }

@@ -1,6 +1,7 @@
 package com.cgl.dao;
 
 import com.cgl.entity.Items;
+import com.cgl.entity.OrderNum;
 
 import java.util.List;
 
@@ -19,10 +20,24 @@ public interface ItemsDao {
 
     /**
      * 根据用户id查找  用于判断用户是否已参与投票
-     * @param id
+     * @param userId,subjectId
      * @return
      */
-    Items findByUserId(Integer id);
+    List<Items> findByUserId(Integer userId,Integer subjectId);
     List<Items> findBySubject(Integer subjectId);
+
+    /**
+     * 统计投票各个选项的数量
+     * @param subjectId
+     * @return
+     */
+    List<OrderNum> searchNum(Integer subjectId);
+
+    /**
+     * 查找投票拥有的所有选项
+     * @param subjectId
+     * @return
+     */
+    int optionNum(Integer subjectId);
 
 }

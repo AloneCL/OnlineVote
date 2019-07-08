@@ -96,7 +96,7 @@
                 </c:choose></td>
                 <td colspan="2">
                     <a href="subjectDetail?sId=${s.id}" class="see nohover">查看</a>
-                    <a href="#" class="see nohover">参与</a>
+                    <a href="subjectDetail?sId=${s.id}" class="see nohover">参与</a>
                 </td>
             </tr>
         </c:forEach>

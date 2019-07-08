@@ -55,15 +55,15 @@
                             <p>类型：<c:choose><c:when test="${subject.type==1}">单选</c:when><c:otherwise>多选</c:otherwise></c:choose></p>
                         </div>
                     </div>
-                    <form action="addItem" method="post" onsubmit="return checkOptions()">
+                    <form id="form">
                         <div class="col-md-8 option_bar_design">
                              <input type="text" name="userId" value="${cookie.userId.value}" hidden>
                             <input type="text" name="subjectId" value="${optionList[0].subjectId}" hidden>
                             <c:forEach var="o" items="${optionList}">
                                 <div class="option-line">
                                     <div class="option-text"><input type="checkbox" name="option" value="${o.id}">选项 ${o.order}. ${o.option}</input></div>
-                                    <input type="text" name="optionOrder" value="${o.order}" hidden>
                                     <span class="float_right"></span>
+                                    <input type="text" name="optionOrder" value="${o.order}" hidden>
                                     </p>
                                     <div class="option-bar">
                                         <span></span>
@@ -74,7 +74,7 @@
                         </div>
                         <div class="col-md-8" style="text-align: center">
                             <span style="color: red;"></span><br>
-                            <button type="submit" id="submitBtn">投票</button>
+                            <button type="button" id="submitBtn">投票</button>
                         </div>
                     </form>
                 </div>
@@ -87,21 +87,88 @@
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script src="lib/bootstrap.min.js"></script>
 <script>
+    var checkflag = false;
+
+    var userVote = false;
 
     function checkVote() {
         var url = "${pageContext.request.contextPath}/checkVote";
         $.get(url, {
             "userId" : ${cookie.userId.value},
+            "subjectId":${subject.id},
         }, function(data) {
             if (data == "true") {
-                return true;
+                alert("true");
+               userVote =  true;
             } else {
-                alert("你已经参加过此投票");
-                return false;
+                $("input[name=option]").not("input:checked").attr('disabled','disabled');
+                searchNum();
+                checkflag = true;
+              userVote = false;
             }
         });
-        return false;
     }
+
+    /**
+     * 动态显示选项的数量
+     * */
+    function searchNum() {
+        if(!checkflag){
+        $.ajax({
+            url:"${pageContext.request.contextPath}/searchNum",
+
+            data:{
+                "subjectId":${subject.id},
+                "userId" : ${cookie.userId.value},
+            },
+            type:'POST',
+            success:function (data) {
+                console.log(data);
+                var jsonObject = jQuery.parseJSON(data);
+                console.log(jsonObject);
+                var options = $('input[type=checkbox][name=option]');
+                for(var j =0; j < jsonObject.length; j++) {
+                  var e = $(':checkbox[value='+jsonObject[j].orderId+']');             //选择value为id的checkbox
+                    $(e).parent().next().text(jsonObject[j].orderNum+"票");
+                    if(jsonObject[j].userIsVote==true){
+                        $(e).attr("checked",true);
+                    }
+                    $($(e).parent().next().next().next().next().children()[0]).animate({width: jsonObject[j].percent+"%"},1500);
+                    $($(e).parent().next().next().next().next().children()[0]).attr("title",jsonObject[j].percent+"%");
+                }
+            }
+        });
+        }
+    }
+
+    /**
+     * 投票点击
+     * */
+    $('#submitBtn').click(function (){
+        var checkd = $("input:checkbox[name=option]:checked");
+        var types = ${subject.type};
+
+        if(!userVote||checkd.length >types||checkd.length<1){
+            alert("You have already voted.");
+            return false;
+        }else {
+             $.ajax({
+                 type:'post',
+                 data: $('#form').serialize(),
+                 url:'${pageContext.request.contextPath}/addItem',
+                 cache:false,
+                 dataType:'text',
+                 success:function (data) {
+                     if(data=='ok'){
+                         searchNum();
+                     }else {
+                         alert("error");
+                     }
+                 }
+             })
+        }
+
+    });
 
     /**
      * 检验增加选项填写是否正确
@@ -115,17 +182,7 @@
         }
     }
 
-    /**
-     * 投票选项判断
-     * */
-    function checkOptions() {
-        var checkd = $("input:checkbox[name=option]:checked");
-        var types = ${subject.type};
-        if(checkd.length >types||checkd.length<1||!checkVote()){
-            return false;
-        }
-        return true;
-    }
+
 
     /**
      * 根据投票状态来筛选投票
@@ -243,6 +300,9 @@
         });
     });
 
+    /**
+     * 显示或隐藏时间输入框
+     */
     $(function () {
         $('input[type=radio][name=type]').change(function () {
             var inType = document.getElementById('types');
@@ -263,9 +323,10 @@
     })
 
     $(function () {
+        checkVote();                //进入自动检查是否已投票
         var options = $("input[type=checkbox][name=option]");
         var types = ${subject.type};
-        if(types>1) {
+        //if(types>1) {
             for (var i = 0; i < options.length; i++) {
                 $(options[i]).change(function () {
                     var checkd = $("input:checkbox[name=option]:checked");
@@ -279,8 +340,8 @@
 
                     }
                 })
-            }
         }
+
     });
 </script>
 </html>

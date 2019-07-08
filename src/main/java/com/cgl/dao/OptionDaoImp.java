@@ -64,7 +64,7 @@ public class OptionDaoImp implements OptionDao {
     @Override
     public List<Option> findBySid(Integer sid) {
         Connection con = DBUtil.getConnection();
-        String sql = "select * from tb_option where subject_id = ?";
+        String sql = "select * from tb_option where subject_id = ? order by option_order";
         List<Option> list = new ArrayList<Option>();
         try {
             PreparedStatement ps = con.prepareStatement(sql);
