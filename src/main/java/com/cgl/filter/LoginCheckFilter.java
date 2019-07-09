@@ -31,7 +31,7 @@ public class LoginCheckFilter implements Filter {
                 chain.doFilter(req, resp);
             }else {
                 request.setAttribute("error","请登录之后在进行操作");
-                request.getRequestDispatcher("index.jsp").forward(request,response);
+                request.getRequestDispatcher("login.jsp").forward(request,response);
             }
 
         }

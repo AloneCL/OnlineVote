@@ -22,7 +22,7 @@ import java.util.List;
 @WebServlet(name = "SearchNumServlet",urlPatterns = "/searchNum")
 public class SearchNumServlet extends HttpServlet implements FinalConstant{
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int id = Integer.valueOf(request.getParameter("subjectId"));
+        int id = Integer.valueOf(request.getParameter(CLIENT_SUBJECT_ID));
         int userId = Integer.valueOf(request.getParameter(CLIENT_USER_ID));
 
         ItemDaoImp itemDaoImp = new ItemDaoImp();

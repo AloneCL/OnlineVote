@@ -9,7 +9,7 @@
         <filter-class>com.cgl.filter.LoginCheckFilter</filter-class>
         <init-param>
             <param-name>ignore</param-name>
-            <param-value>/css,/image,/lib,/userLogin,/userRegister/,getValidate,/submitLogin,/submitRegister,/.jsp,/checkCode</param-value>
+            <param-value>/css,/image,/lib,/userLogin,/userRegister,/getValidate,/submitLogin,/submitRegister,/.jsp,/checkCode,/showSubject,/.jpg,/.png</param-value>
         </init-param>
     </filter>
     <filter-mapping>

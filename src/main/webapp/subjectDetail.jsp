@@ -28,7 +28,13 @@
                 <li class="active"><a href="showSubject">首页</a></li>
                 <li><a href="#" class="addClick">发起投票</a></li>
                 <li><a href="ticket.html">我的投票</a></li>
-                <li><a href="scenery.html">个人中心</a></li>
+                <li id="personC"><a href="#">个人中心</a>
+                    <ul class="person">
+                        <li><a href="#">个人资料</a></li>
+                        <li><a href="#">我的投票</a></li>
+                        <li><a href="logOut">退出登录</a></li>
+                    </ul>
+                </li>
                 <li><a href="about.html">系统简介</a></li>
             </ul>
         </nav>
@@ -91,6 +97,20 @@
 
     var userVote = false;
 
+
+
+    $(function () {
+        $("#personC").mouseover(function () {
+            $(".person").css('transform','scaleY(1)');
+        });
+        $("#personC").mouseout(function () {
+            $(".person").css('transform','scaleY(0)');
+        });
+    });
+
+    /**
+     * 检验是否已投票
+     * */
     function checkVote() {
         var url = "${pageContext.request.contextPath}/checkVote";
         $.get(url, {
@@ -101,7 +121,7 @@
                 alert("true");
                userVote =  true;
             } else {
-                $("input[name=option]").not("input:checked").attr('disabled','disabled');
+                $("input[type=checkbox][name=option]").not("input:checked").attr('disabled','disabled');
                 searchNum();
                 checkflag = true;
               userVote = false;

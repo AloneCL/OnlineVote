@@ -12,7 +12,7 @@
 <head>
     <title>用户注册界面</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="lib/css/login.css">
+    <link rel="stylesheet" type="text/css" href="css/login.css">
     <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
@@ -23,7 +23,7 @@
             <div class="regist_top">
                 <div class="left fl">会员注册</div>
                 <div class="right fr">
-                    <a href="mainGoods.action" target="_self">jila网上投票系统</a>
+                    <a href="showSubject" target="_self">jila网上投票系统</a>
                 </div>
                 <div class="clear"></div>
                 <div class="xian center"></div>

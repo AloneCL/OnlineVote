@@ -37,7 +37,13 @@
                 <li class="active"><a href="index.html">首页</a></li>
                 <li><a href="#" class="addClick">发起投票</a></li>
                 <li><a href="ticket.html">我的投票</a></li>
-                <li><a href="scenery.html">个人中心</a></li>
+                <li id="personC"><a href="#">个人中心</a>
+                    <ul class="person">
+                        <li><a href="#">个人资料</a></li>
+                        <li><a href="#">我的投票</a></li>
+                        <li><a href="logOut">退出登录</a></li>
+                    </ul>
+                </li>
                 <li><a href="about.html">系统简介</a></li>
             </ul>
         </nav>
@@ -95,8 +101,8 @@
                     </c:otherwise>
                 </c:choose></td>
                 <td colspan="2">
-                    <a href="subjectDetail?sId=${s.id}" class="see nohover">查看</a>
-                    <a href="subjectDetail?sId=${s.id}" class="see nohover">参与</a>
+                    <a href="subjectDetail?subjectId=${s.id}" class="see nohover">查看</a>
+                    <a href="subjectDetail?subjectId=${s.id}" class="see nohover">参与</a>
                 </td>
             </tr>
         </c:forEach>
@@ -209,6 +215,15 @@
             return false;
         }
     }
+
+    $(function () {
+        $("#personC").mouseover(function () {
+            $(".person").css('transform','scaleY(1)');
+        });
+        $("#personC").mouseout(function () {
+            $(".person").css('transform','scaleY(0)');
+        });
+    });
 
     /**
      * 根据投票状态来筛选投票

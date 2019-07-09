@@ -21,9 +21,9 @@ import java.util.List;
  * @Description:
  */
 @WebServlet(name = "SubjectDetailsServlet",urlPatterns = "/subjectDetail")
-public class SubjectDetailsServlet extends HttpServlet {
+public class SubjectDetailsServlet extends HttpServlet implements FinalConstant{
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int subjectId = Integer.valueOf(request.getParameter("sId"));
+        int subjectId = Integer.valueOf(request.getParameter(CLIENT_SUBJECT_ID));
         SubjectDaoImp subjectDaoImp = new SubjectDaoImp();
         OptionDaoImp daoImp = new OptionDaoImp();
         Subject subject = subjectDaoImp.findById(subjectId);

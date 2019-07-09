@@ -14,7 +14,7 @@
     <meta charset="UTF-8">
     <title>会员登录</title>
     <link rel="stylesheet" type="text/css" href="css/login.css">
-    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/jquery/1.9.1/js/jquery.min.js"></script>
 </head>
 <body>
 <!-- login -->

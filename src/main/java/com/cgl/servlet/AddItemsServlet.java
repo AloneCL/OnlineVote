@@ -22,7 +22,7 @@ public class AddItemsServlet extends HttpServlet implements FinalConstant{
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
          String[] options = request.getParameterValues("option");
          int userId = Integer.valueOf(request.getParameter(CLIENT_USER_ID));
-         int subjectId = Integer.valueOf(request.getParameter("subjectId"));
+         int subjectId = Integer.valueOf(request.getParameter(CLIENT_SUBJECT_ID));
          String[] orders = request.getParameterValues("optionOrder");
          List<Items> itemsList = new ArrayList<Items>();
         for(int i=0; i<options.length; i++){

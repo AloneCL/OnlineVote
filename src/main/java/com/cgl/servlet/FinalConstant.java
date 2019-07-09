@@ -8,6 +8,11 @@ package com.cgl.servlet;
 public interface FinalConstant {
 
     /**
+     * 存放于请求中传到后端的投票标识id
+     */
+    String CLIENT_SUBJECT_ID = "subjectId";
+
+    /**
      * 分页查询每页信息的条数
      */
     int PAGE_SIZE = 10;

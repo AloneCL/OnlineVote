@@ -31,7 +31,6 @@ public class AddSubjectServlet extends HttpServlet implements FinalConstant{
         Cookie[] cookies = null;
         Cookie cookie = null;
         try {
-            System.out.println(1111111+"进入添加servlet");
             String title = request.getParameter("subjectTitle");
             int type = 0;
             if(!request.getParameter("types").equals(""))
