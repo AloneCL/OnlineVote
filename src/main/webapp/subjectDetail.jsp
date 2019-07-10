@@ -27,15 +27,15 @@
             <ul>
                 <li class="active"><a href="showSubject">首页</a></li>
                 <li><a href="#" class="addClick">发起投票</a></li>
-                <li><a href="ticket.html">我的投票</a></li>
+                <li><a href="userVotes">我的投票</a></li>
                 <li id="personC"><a href="#">个人中心</a>
                     <ul class="person">
                         <li><a href="#">个人资料</a></li>
-                        <li><a href="#">我的投票</a></li>
+                        <li><a href="#">历史投票</a></li>
                         <li><a href="logOut">退出登录</a></li>
                     </ul>
                 </li>
-                <li><a href="about.html">系统简介</a></li>
+                <li><a href="#">系统简介</a></li>
             </ul>
         </nav>
     </div>
@@ -46,7 +46,7 @@
         <div class="row">
             <div class="col-md-10">
                 <div class="section-title">
-                    <h2><a style="color: #337ab7;text-decoration: none" href="showSubject"> 投票列表 </a>->> 投票詳情</h2>
+                    <h2><a style="color: #337ab7;text-decoration: none" href="#" onclick="javascript:history.back(-1)"> 投票列表 </a>->> 投票詳情</h2>
                 </div>
             </div>
             <div class="service-area">
@@ -118,8 +118,7 @@
             "subjectId":${subject.id},
         }, function(data) {
             if (data == "true") {
-                alert("true");
-               userVote =  true;
+                userVote =  true;
             } else {
                 $("input[type=checkbox][name=option]").not("input:checked").attr('disabled','disabled');
                 searchNum();
@@ -167,6 +166,10 @@
     $('#submitBtn').click(function (){
         var checkd = $("input:checkbox[name=option]:checked");
         var types = ${subject.type};
+        if(${sTime=='false'}){
+            alert("投票已经过期");
+            return false;
+        }
 
         if(!userVote||checkd.length >types||checkd.length<1){
             alert("You have already voted.");
@@ -180,6 +183,7 @@
                  dataType:'text',
                  success:function (data) {
                      if(data=='ok'){
+                         $("#submitBtn").prev().prev().text("");
                          searchNum();
                      }else {
                          alert("error");
@@ -356,12 +360,21 @@
                         $("#submitBtn").prev().prev().text("你已选择了" + leng + "个选项，还可以选择" + (types - leng) + "个选项");
                     }else {
                         $("#submitBtn").prev().prev().text("到达最大选项个数，不能再选择更多的选项了");
-                        $("input[name=option]").not("input:checked").attr('disabled','disabled');
+                        $("input[type=checkbox][name=option]").not("input:checked").attr('disabled','disabled');
 
                     }
                 })
         }
 
     });
+
+
+    $(function () {
+        if(${sTime=='false'}){
+            alert("投票已经过期");
+            $('input[type=checkbox][name=option]').attr('disabled','disabled');
+            searchNum();
+        }
+    })
 </script>
 </html>

@@ -131,6 +131,37 @@ public class SubjectDaoImp implements SubjectDao {
     }
 
     /**
+     *
+     * @param id  用户id
+     * @param type  投票类型
+     * @return
+     */
+    @Override
+    public int getCountForUser(Integer id,int type) {
+        Connection con = DBUtil.getConnection();
+        String sql = "";
+        if(type==0)
+            sql = "select count(1) as count from tb_subject where user_id = ?";
+        else if (type==1)
+            sql = "select count(1) as count from tb_subject where user_id = ? and (select current_timestamp )< endTime";
+        else
+            sql = "select count(1) as count from tb_subject where user_id = ? and (select current_timestamp) >endTime";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                return rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            DBUtil.closeConnection(con);
+        }
+        return 0;
+    }
+
+    /**
      * 根据id索引查找数据
      * @param id
      * @return
@@ -221,6 +252,50 @@ public class SubjectDaoImp implements SubjectDao {
         }
 
         return list;
+    }
+
+    /**
+     *
+     * @param id           用户id
+     * @param start        开始序号
+     * @param pageSize          每页查询的条数
+     * @param type          查询的类型（0代表所有类型 1代表进行中 2代表已过期）
+     * @return
+     */
+    public List<Subject> findByUserId(Integer id, int start, int pageSize, int type) {
+        PreparedStatement ps = null;
+        String sql = "";
+        Connection con = DBUtil.getConnection();
+        if(type==0)
+            sql = "select * from tb_subject where user_id = ? limit ?,?";
+        else  if(type == 1)
+            sql = "select * from tb_subject where user_id = ? and (select current_timestamp) < endTime limit ?,?";
+        else
+            sql = "select * from tb_subject where user_id = ? and (select current_timestamp) > endTime limit ?,?";
+        List<Subject> subjectList = new ArrayList<Subject>();
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1,id);
+            ps.setInt(2,start);
+            ps.setInt(3,pageSize);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                Subject subject = new Subject();
+                subject.setId(rs.getInt("subject_id"));
+                subject.setTitle(rs.getString("subject_title"));
+                subject.setType(rs.getInt("subject_type"));
+                subject.setUserId(rs.getInt("user_id"));
+                subject.setStartTime(rs.getTimestamp("startTime"));
+                subject.setEndTime(rs.getTimestamp("endTime"));
+                subject.setStatus(DateConventer.TimeDifference(new Date().getTime(),subject.getEndTime().getTime()));
+                subjectList.add(subject);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return subjectList;
     }
 
     /**

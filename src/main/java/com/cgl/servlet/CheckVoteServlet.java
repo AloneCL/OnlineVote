@@ -21,7 +21,7 @@ public class CheckVoteServlet extends HttpServlet implements FinalConstant{
         int subjectId = Integer.valueOf(request.getParameter("subjectId"));
         ItemDaoImp itemDaoImp = new ItemDaoImp();
 
-        if (itemDaoImp.findByUserId(userId,subjectId)!=null){
+        if (!itemDaoImp.findByUserId(userId,subjectId).isEmpty()){
             response.getWriter().print("false");
         }else
             response.getWriter().print("true");

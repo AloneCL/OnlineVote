@@ -16,7 +16,7 @@ import java.io.IOException;
 public class LogOutServlet extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getSession().invalidate();
-        System.out.println("用户已退出");
+        //System.out.println("用户已退出");
         response.sendRedirect("login.jsp");
     }
 }

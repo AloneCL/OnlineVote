@@ -11,7 +11,7 @@
 <!DOCTYPE>
 <html>
 <head>
-    <title>投票列表</title>
+    <title>我的投票</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="css/head.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
@@ -34,9 +34,9 @@
         <h1 class="logo"></h1>
         <nav class="link">
             <ul>
-                <li class="active"><a href="showSubject">首页</a></li>
+                <li><a href="showSubject">首页</a></li>
                 <li><a href="#" class="addClick">发起投票</a></li>
-                <li><a href="userVotes">我的投票</a></li>
+                <li class="active"><a href="#">我的投票</a></li>
                 <li id="personC"><a href="#">个人中心</a>
                     <ul class="person">
                         <li><a href="#">个人资料</a></li>
@@ -59,7 +59,7 @@
                 <option value="1" <c:if test="${type==1}">selected</c:if>>进行中</option>
                 <option value="2" <c:if test="${type==2}">selected</c:if>>已结束</option>
             </select>
-            <h1 style="display: inline-block">投票列表显示</h1> <hr>
+            <h1 style="display: inline-block">我发起的投票</h1> <hr>
         </caption>
 
         <tr>
@@ -110,7 +110,7 @@
             <td colspan="5" style="font-size: 18px">
                 <c:choose>
                     <c:when test="${currentPage!=1}">
-                        <a style="color: #337ab7;font-size: 18px;" href="showSubject?page=${currentPage-1}">上一页</a>
+                        <a style="color: #337ab7;font-size: 18px;" href="userVotes?page=${currentPage-1}">上一页</a>
                     </c:when>
                     <c:otherwise>
                         上一页
@@ -119,7 +119,7 @@
                 共<span style="color: red;font-size: 19px">${totalPage}</span>页&nbsp;共<span style="color: red;font-size: 19px">${total}</span>有条记录&nbsp;当前是第<span style="color: red;font-size: 19px">${currentPage}</span>页&nbsp;
                 <c:choose>
                     <c:when test="${currentPage != totalPage }">
-                        <a style="color: #337ab7;font-size: 18px;" href="showSubject?page=${currentPage+1}">下一页</a>
+                        <a style="color: #337ab7;font-size: 18px;" href="userVotes?page=${currentPage+1}">下一页</a>
                     </c:when>
                     <c:otherwise>
                         下一页
@@ -232,7 +232,7 @@
     function changeList(searchType){
         if(searchType!=-1){
 
-            window.self.location = "${pageContext.request.contextPath}/showSubject?searchType="+searchType;
+            window.self.location = "${pageContext.request.contextPath}/userVotes?searchType="+searchType;
         }
     }
 
