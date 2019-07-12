@@ -69,6 +69,7 @@
 }
 
 .modal-body{
+    margin-bottom: 10px;
     font-size: 18px;
 }
 
@@ -116,10 +117,11 @@
     font-weight: bold;
 }
 .titleList li a{
+    color:blue;
     cursor: pointer;
     text-decoration: none;
 }
-.titleList li>a:hover{
+.titleList li a:hover{
     color: red;
     font-size: 17px;
 }

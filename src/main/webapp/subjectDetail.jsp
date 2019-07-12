@@ -171,26 +171,30 @@
             return false;
         }
 
-        if(!userVote||checkd.length >types||checkd.length<1){
+        if(!userVote){
             alert("You have already voted.");
             return false;
+        }else if(checkd.length >types||checkd.length<1){
+            alert("option num is error");
+            return false;
         }else {
-             $.ajax({
-                 type:'post',
-                 data: $('#form').serialize(),
-                 url:'${pageContext.request.contextPath}/addItem',
-                 cache:false,
-                 dataType:'text',
-                 success:function (data) {
-                     if(data=='ok'){
-                         $("#submitBtn").prev().prev().text("");
-                         searchNum();
-                     }else {
-                         alert("error");
-                     }
-                 }
-             })
-        }
+                $.ajax({
+                    type:'post',
+                    data: $('#form').serialize(),
+                    url:'${pageContext.request.contextPath}/addItem',
+                    cache:false,
+                    dataType:'text',
+                    success:function (data) {
+                        if(data=='ok'){
+                            $("#submitBtn").prev().prev().text("");
+                            $("#submitBtn").attr('disabled','disabled');
+                            searchNum();
+                        }else {
+                            alert("error");
+                        }
+                    }
+                })
+            }
 
     });
 
@@ -249,19 +253,21 @@
     function  checkTypeNum() {
         var v = document.getElementById('types');
         var title = $("input[name='option']");
-        if(v.value>=title.length){
-            $(v).next().text("不能超过选项总数");
-            v.value = "";
-            v.focus();
-            return false;
-        }else if(v.value<1){
-            $(v).next().text("选项数量至少为1");
-            v.value = "";
-            v.focus();
-            return false;
-        }else {
-            $(v).next().text("");
-            return true;
+        if(v.value != '') {
+            if (v.value >= title.length) {
+                $(v).next().text("不能超过选项总数");
+                v.value = "";
+                v.focus();
+                return false;
+            } else if (v.value < 1) {
+                $(v).next().text("选项数量至少为1");
+                v.value = "";
+                v.focus();
+                return false;
+            } else {
+                $(v).next().text("");
+                return true;
+            }
         }
         return true;
     }
