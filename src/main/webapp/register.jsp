@@ -13,7 +13,6 @@
     <title>用户注册界面</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="css/login.css">
-    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
 <form method="post" action="submitRegister"
@@ -57,6 +56,7 @@
     </div>
 </form>
 </body>
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script>
     function checkInput(){
         var p1 = document.getElementById("npass1").value;
@@ -86,8 +86,23 @@
         } else if (!reg.test(name)) {
             nameSpan.innerHTML = "<font size='2' color='red'>只能由字母数字下划线组成</font>"
         } else {
-            nameSpan.innerHTML = "<font size='2' color='green'>符合要求</font>"
-            return true;
+            $.ajax({
+                url:'${pageContext.request.contextPath}/searchUser',
+                type:'post',
+                data: {'userName':name},
+                async:true,
+                success:function(data) {
+                if (data == 'true') {
+                    nameSpan.innerHTML = "<font size='2' color='green'>符合要求</font>";
+                    return true;
+                }else {
+                    console.log(data);
+                    nameSpan.innerHTML = "<font size='2' color='red'>该用户名已存在</font>";
+                    return false;
+                }
+            }
+            });
+
         }
     }
 
